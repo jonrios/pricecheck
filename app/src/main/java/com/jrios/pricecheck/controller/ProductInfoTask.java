@@ -22,15 +22,9 @@ import java.io.InputStreamReader;
  */
 public class ProductInfoTask extends AsyncTask<String, Void, ProductDTO>{
 
-    private String upc;
-
-    public ProductInfoTask(String upc){
-        this.upc = upc;
-    }
-
     @Override
     protected ProductDTO doInBackground(String... params) {
-        HttpGet h = new HttpGet("http://www.searchupc.com/handlers/upcsearch.ashx?request_type=3&access_token=668BD942-8CEF-42C7-BDC6-2C80B227B19B&upc="+upc);
+        HttpGet h = new HttpGet("http://www.searchupc.com/handlers/upcsearch.ashx?request_type=3&access_token=668BD942-8CEF-42C7-BDC6-2C80B227B19B&upc="+params[0]);
         HttpClient hc = new DefaultHttpClient();
         ProductDTO rv = null;
 
@@ -44,10 +38,11 @@ public class ProductInfoTask extends AsyncTask<String, Void, ProductDTO>{
 
             if(tmp.length() != 0){
                 jsonProduct = new JSONObject(tmp.getString("0"));
-                rv = new ProductDTO(jsonProduct.getString("productname"));
-            }
-
-            Log.d("ProductInfoTask","Product: "+jsonProduct.getString("productname"));
+                String productname = jsonProduct.getString("productname");
+                rv = new ProductDTO(productname);
+                Log.d("ProductInfoTask","Product: "+productname);
+            }else
+                Log.d("ProductInfoTask","No product found");
 
         } catch (ClientProtocolException e) {
             // TODO Auto-generated catch block
