@@ -50,7 +50,7 @@ public class MainActivity extends ActionBarActivity
 
         switch(position){
             case ITEM_MAIN:
-                fragment = new MainFragment();
+                fragment =MainFragment.getInstance();
                 break;
         }
         if(fragment != null)
