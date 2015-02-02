@@ -6,6 +6,8 @@ package com.jrios.pricecheck.model;
 public class ProductDTO {
     private int id;
     private String productname;
+    private String upc;
+
 
     public ProductDTO(String productname) {
         this.productname = productname;
@@ -17,5 +19,13 @@ public class ProductDTO {
 
     public void setProductname(String productname) {
         this.productname = productname;
+    }
+
+    public String getUpc() {
+        return upc;
+    }
+
+    public void setUpc(String upc) {
+        this.upc = upc;
     }
 }
