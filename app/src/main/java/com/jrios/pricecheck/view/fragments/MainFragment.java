@@ -12,8 +12,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.jrios.pricecheck.R;
+import com.jrios.pricecheck.model.DatabaseListener;
+import com.jrios.pricecheck.model.DatabaseListenerManager;
+import com.jrios.pricecheck.model.DatabaseOperations;
 import com.jrios.pricecheck.model.ProductDTO;
 import com.jrios.pricecheck.view.MainActivity;
+import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +32,11 @@ public class MainFragment extends Fragment {
     private List<ProductDTO> lProducts;
     private LastProductsAdapter adapter;
 
+    private FloatingActionButton fab;
+
+
+    private DatabaseOperations db;
+
     public static MainFragment getInstance(){
         if(_instance == null)
             _instance = new MainFragment();
@@ -35,13 +44,22 @@ public class MainFragment extends Fragment {
     }
 
     public MainFragment() {
-        // Required empty public constructor
+        db = DatabaseOperations.getInstance(getActivity());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
+        db.registerListener(DatabaseListenerManager.TABLE_LAST_UPDATED, new DatabaseListener() {
+            @Override
+            public void trigger() {
+
+            }
+        });
+
+        fab = (FloatingActionButton) rootView.findViewById(R.id.last_updated_fab);
 
         RecyclerView recList = (RecyclerView) rootView.findViewById(R.id.lastProductsList);
         recList.setHasFixedSize(true);
@@ -55,6 +73,8 @@ public class MainFragment extends Fragment {
 
         adapter = new LastProductsAdapter(lProducts);
         recList.setAdapter(adapter);
+
+        fab.attachToRecyclerView(recList);
 
         return rootView;
     }
@@ -77,6 +97,7 @@ public class MainFragment extends Fragment {
 
     @Override
     public void onDestroy() {
+        super.onDestroy();
         _instance = null;
     }
 

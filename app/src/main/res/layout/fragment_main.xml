@@ -3,6 +3,7 @@
     xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/fragment_main_container"
     tools:context=".view.fragments.MainFragment">
 
     <android.support.v7.widget.RecyclerView
@@ -12,15 +13,16 @@
         />
 
     <com.melnykov.fab.FloatingActionButton
-        android:id="@+id/fab"
+        android:id="@+id/last_updated_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
         android:layout_margin="16dp"
-        android:src="@drawable/ic_action_content_new"
+        android:src="@drawable/ic_add_shopping_cart_black_24dp"
         fab:fab_colorNormal="@color/primary"
-        fab:fab_colorPressed="@color/primary_pressed"
-        fab:fab_colorRipple="@color/ripple" />
+        fab:fab_colorPressed="@color/primary_dark"
+        fab:fab_colorRipple="@color/ripple_material_light"/>
 
 
 </RelativeLayout>

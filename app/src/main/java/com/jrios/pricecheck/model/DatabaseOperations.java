@@ -74,6 +74,13 @@ public class DatabaseOperations extends SQLiteOpenHelper implements ProductDAO{
         return rv;
     }
 
+    public void registerListener(int table, DatabaseListener listener){
+        listenerManager.registerListener(table, listener);
+    }
+
+    public void unregisterListener(int table, DatabaseListener listener){
+        listenerManager.unregisterListener(table, listener);
+    }
 
     /*
     PRODUCT OPERATIONS
