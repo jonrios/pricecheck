@@ -11,5 +11,11 @@
     <string name="title_section3">Shops</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="size">Size</string>
-
+    <string name="newProduct">New Product</string>
+    <string name="productName">Product Name</string>
+    <string name="productSize">Product Size</string>
+    <string name="upc">UPC Code</string>
+    <string name="unit_kilogram">kg</string>
+    <string name="unit_piece">Piece</string>
+    <string name="unit_gram">g</string>
 </resources>

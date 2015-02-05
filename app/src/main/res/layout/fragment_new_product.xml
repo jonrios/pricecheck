@@ -1,0 +1,44 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp"
+    tools:context="com.jrios.pricecheck.view.fragments.NewProductFragment">
+
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/etProductName"
+        android:hint="@string/productName"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/etProductSize"
+        android:layout_below="@+id/etProductName"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:hint="@string/productSize"/>
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spProductSizeUnit"
+        android:layout_below="@+id/etProductName"
+        android:layout_toRightOf="@+id/etProductSize"
+        android:layout_toEndOf="@+id/etProductSize"
+        android:spinnerMode="dropdown"
+        android:entries="@array/units"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/etUPC"
+        android:layout_below="@+id/etProductSize"
+        android:hint="@string/upc"/>
+
+
+</RelativeLayout>

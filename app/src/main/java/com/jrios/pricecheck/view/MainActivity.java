@@ -1,3 +1,5 @@
+
+
 package com.jrios.pricecheck.view;
 
 import android.os.Bundle;
@@ -51,7 +53,7 @@ public class MainActivity extends ActionBarActivity
 
         switch(position){
             case ITEM_MAIN:
-                fragment =MainFragment.getInstance();
+                fragment = MainFragment.getInstance();
                 break;
         }
         if(fragment != null)

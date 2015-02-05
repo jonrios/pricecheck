@@ -8,13 +8,15 @@ CREATE TABLE products (
 CREATE TABLE shops (
     id INTEGER PRIMARY KEY,
     name TEXT,
-    location TEXT
+    location TEXT,
+    coordinates TEXT
 );
 CREATE TABLE prices (
     product_id INTEGER,
     shop_id INTEGER,
     price_date DATETIME,
     price REAL,
+    is_offer BOOLEAN,
     PRIMARY KEY(product_id, shop_id)
     FOREIGN KEY(product_id) REFERENCES products(id),
     FOREIGN KEY(shop_id) REFERENCES shops(id)

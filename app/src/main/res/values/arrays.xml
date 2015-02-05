@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="units" >
+        <item name="uPiece">@string/unit_piece</item>
+        <item name="uKg">@string/unit_kilogram</item>
+        <item name="uG">@string/unit_gram</item>
+    </string-array>
+
+</resources>

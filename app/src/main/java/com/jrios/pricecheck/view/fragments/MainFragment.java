@@ -4,6 +4,7 @@ package com.jrios.pricecheck.view.fragments;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import com.jrios.pricecheck.model.DatabaseListenerManager;
 import com.jrios.pricecheck.model.DatabaseOperations;
 import com.jrios.pricecheck.model.ProductDTO;
 import com.jrios.pricecheck.view.MainActivity;
+import com.jrios.pricecheck.view.utils.SwipeableRecyclerViewTouchListener;
 import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -33,7 +35,6 @@ public class MainFragment extends Fragment {
     private LastProductsAdapter adapter;
 
     private FloatingActionButton fab;
-
 
     private DatabaseOperations db;
 
@@ -74,7 +75,47 @@ public class MainFragment extends Fragment {
         adapter = new LastProductsAdapter(lProducts);
         recList.setAdapter(adapter);
 
+        SwipeableRecyclerViewTouchListener swipeTouchListener =
+                new SwipeableRecyclerViewTouchListener(recList,
+                        new SwipeableRecyclerViewTouchListener.SwipeListener() {
+                            @Override
+                            public boolean canSwipe(int position) {
+                                return true;
+                            }
+
+                            @Override
+                            public void onDismissedBySwipeLeft(RecyclerView recyclerView, int[] reverseSortedPositions) {
+                                for (int position : reverseSortedPositions) {
+                                    lProducts.remove(position);
+                                    adapter.notifyItemRemoved(position);
+                                }
+                                adapter.notifyDataSetChanged();
+                            }
+
+                            @Override
+                            public void onDismissedBySwipeRight(RecyclerView recyclerView, int[] reverseSortedPositions) {
+                                for (int position : reverseSortedPositions) {
+                                    lProducts.remove(position);
+                                    adapter.notifyItemRemoved(position);
+                                }
+                                adapter.notifyDataSetChanged();
+                            }
+                        });
+
+
+        recList.addOnItemTouchListener(swipeTouchListener);
+
         fab.attachToRecyclerView(recList);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+
+                Fragment fragment = NewProductFragment.getInstance();
+
+                fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+            }
+        });
 
         return rootView;
     }
