@@ -18,6 +18,7 @@ import com.jrios.pricecheck.model.DatabaseListenerManager;
 import com.jrios.pricecheck.model.DatabaseOperations;
 import com.jrios.pricecheck.model.ProductDTO;
 import com.jrios.pricecheck.view.MainActivity;
+import com.jrios.pricecheck.view.utils.SwipeDismissRecyclerViewTouchListener;
 import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -74,6 +75,27 @@ public class MainFragment extends Fragment {
 
         adapter = new LastProductsAdapter(lProducts);
         recList.setAdapter(adapter);
+
+        SwipeDismissRecyclerViewTouchListener swipeTouchListener = new SwipeDismissRecyclerViewTouchListener(recList, new SwipeDismissRecyclerViewTouchListener.DismissCallbacks() {
+            @Override
+            public boolean canDismiss(int position) {
+                return true;
+            }
+
+            @Override
+            public void onDismiss(RecyclerView recyclerView, int[] reverseSortedPositions) {
+
+                for (int position : reverseSortedPositions) {
+                    ProductDTO p = lProducts.get(position);
+                    lProducts.remove(position);
+                    db.removeLastCheckedProduct(p.getId());
+                }
+                // do not call notifyItemRemoved for every item, it will cause gaps on deleting items
+                adapter.notifyDataSetChanged();
+            }
+        });
+
+        recList.setOnTouchListener(swipeTouchListener);
 
         fab.attachToRecyclerView(recList);
         fab.setOnClickListener(new View.OnClickListener() {
