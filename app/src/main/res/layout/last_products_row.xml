@@ -11,24 +11,35 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
+            android:layout_below="@+id/rlProductSize"
             android:text="Test"
             android:textColor="@color/primary_text"
             android:textSize="25sp" />
 
     <RelativeLayout
-        android:id="@+id/rlProductInfo"
-        android:layout_width="100dp"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/tvProductName"
+        android:id="@+id/rlProductSize"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:paddingTop="10dp">
 
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/size"
-            android:id="@+id/textView" />
+            android:id="@+id/tvProductSize"
+            android:text="10 kg"/>
+
     </RelativeLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="Small Text"
+            android:id="@+id/tvUPC"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"/>
 
 
     </RelativeLayout>

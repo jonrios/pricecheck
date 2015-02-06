@@ -18,4 +18,6 @@
     <string name="unit_kilogram">kg</string>
     <string name="unit_piece">Piece</string>
     <string name="unit_gram">g</string>
+    <string name="action_upc">Scan Barcode</string>
+    <string name="action_save">action_save</string>
 </resources>

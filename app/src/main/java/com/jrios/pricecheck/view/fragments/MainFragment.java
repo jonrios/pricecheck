@@ -18,7 +18,6 @@ import com.jrios.pricecheck.model.DatabaseListenerManager;
 import com.jrios.pricecheck.model.DatabaseOperations;
 import com.jrios.pricecheck.model.ProductDTO;
 import com.jrios.pricecheck.view.MainActivity;
-import com.jrios.pricecheck.view.utils.SwipeableRecyclerViewTouchListener;
 import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -45,18 +44,19 @@ public class MainFragment extends Fragment {
     }
 
     public MainFragment() {
-        db = DatabaseOperations.getInstance(getActivity());
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-
+        db = DatabaseOperations.getInstance(getActivity());
         db.registerListener(DatabaseListenerManager.TABLE_LAST_UPDATED, new DatabaseListener() {
             @Override
             public void trigger() {
-
+                populateList();
+                adapter.notifyDataSetChanged();
             }
         });
 
@@ -70,40 +70,11 @@ public class MainFragment extends Fragment {
         recList.setLayoutManager(llm);
 
         lProducts = new ArrayList<>();
-        populateList(lProducts);
+        populateList();
 
         adapter = new LastProductsAdapter(lProducts);
         recList.setAdapter(adapter);
 
-        SwipeableRecyclerViewTouchListener swipeTouchListener =
-                new SwipeableRecyclerViewTouchListener(recList,
-                        new SwipeableRecyclerViewTouchListener.SwipeListener() {
-                            @Override
-                            public boolean canSwipe(int position) {
-                                return true;
-                            }
-
-                            @Override
-                            public void onDismissedBySwipeLeft(RecyclerView recyclerView, int[] reverseSortedPositions) {
-                                for (int position : reverseSortedPositions) {
-                                    lProducts.remove(position);
-                                    adapter.notifyItemRemoved(position);
-                                }
-                                adapter.notifyDataSetChanged();
-                            }
-
-                            @Override
-                            public void onDismissedBySwipeRight(RecyclerView recyclerView, int[] reverseSortedPositions) {
-                                for (int position : reverseSortedPositions) {
-                                    lProducts.remove(position);
-                                    adapter.notifyItemRemoved(position);
-                                }
-                                adapter.notifyDataSetChanged();
-                            }
-                        });
-
-
-        recList.addOnItemTouchListener(swipeTouchListener);
 
         fab.attachToRecyclerView(recList);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -111,23 +82,17 @@ public class MainFragment extends Fragment {
             public void onClick(View v) {
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
 
-                Fragment fragment = NewProductFragment.getInstance();
+                Fragment fragment = new NewProductFragment();
 
-                fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                fragmentManager.beginTransaction().replace(R.id.container, fragment).addToBackStack(null).commit();
             }
         });
 
         return rootView;
     }
 
-    private void populateList(List<ProductDTO> lProducts) {
-        lProducts.add(new ProductDTO("Test1"));
-        lProducts.add(new ProductDTO("Test2"));
-        lProducts.add(new ProductDTO("Test3"));
-        lProducts.add(new ProductDTO("Test4"));
-        lProducts.add(new ProductDTO("Test5"));
-        lProducts.add(new ProductDTO("Test6"));
-        lProducts.add(new ProductDTO("Test7"));
+    private void populateList() {
+        lProducts = db.getLastCheckedProducts(); // TODO Make it more efficient
     }
 
     @Override
@@ -162,8 +127,9 @@ public class MainFragment extends Fragment {
         @Override
         public void onBindViewHolder(ProductViewHolder holder, int position) {
             ProductDTO product = lProducts.get(position);
-            holder.tvProductName.setText(product.getProductname());
-
+            holder.tvProductName.setText(product.getProductName());
+            holder.tvProductSize.setText(product.getProductSizeText());
+            holder.tvUPC.setText(product.getUpc());
         }
 
         @Override
@@ -177,11 +143,14 @@ public class MainFragment extends Fragment {
     private static class ProductViewHolder extends RecyclerView.ViewHolder{
 
         protected TextView tvProductName;
-
+        protected TextView tvProductSize;
+        protected TextView tvUPC;
         public ProductViewHolder(View itemView) {
             super(itemView);
 
             tvProductName = (TextView) itemView.findViewById(R.id.tvProductName);
+            tvProductSize = (TextView) itemView.findViewById(R.id.tvProductSize);
+            tvUPC = (TextView) itemView.findViewById(R.id.tvUPC);
         }
     }
 

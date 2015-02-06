@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.jrios.pricecheck.R;
+import com.jrios.pricecheck.model.DatabaseOperations;
 import com.jrios.pricecheck.view.fragments.MainFragment;
 
 
@@ -34,6 +35,7 @@ public class MainActivity extends ActionBarActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        DatabaseOperations.getInstance(this); //Create instance of database
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);

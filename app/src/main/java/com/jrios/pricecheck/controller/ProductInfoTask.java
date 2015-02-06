@@ -38,9 +38,11 @@ public class ProductInfoTask extends AsyncTask<String, Void, ProductDTO>{
 
             if(tmp.length() != 0){
                 jsonProduct = new JSONObject(tmp.getString("0"));
-                String productname = jsonProduct.getString("productname");
-                rv = new ProductDTO(productname);
-                Log.d("ProductInfoTask","Product: "+productname);
+                String productName = jsonProduct.getString("productname");
+                rv = new ProductDTO();
+                rv.setProductName(productName);
+                rv.setUpc(params[0]);
+                Log.d("ProductInfoTask","Product: "+productName);
             }else
                 Log.d("ProductInfoTask","No product found");
 
