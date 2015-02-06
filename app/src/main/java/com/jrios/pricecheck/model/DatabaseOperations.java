@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ import java.util.List;
  */
 public class DatabaseOperations extends SQLiteOpenHelper implements ProductDAO{
 
+    private static final String TAG = "DatabaseOperations";
     private Context context;
 
     private static final int DATABASE_VERSION = 1;
@@ -185,6 +187,9 @@ public class DatabaseOperations extends SQLiteOpenHelper implements ProductDAO{
 
     @Override
     public void removeLastCheckedProduct(int id) {
+        Log.d(TAG, "removeLastCheckedProduct(id = "+id+")");
+        SQLiteDatabase db = getWritableDatabase();
 
+        db.delete("last_updated", "product_id = ?", new String[]{String.valueOf(id)});
     }
 }
