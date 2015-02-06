@@ -75,7 +75,6 @@ public class MainFragment extends Fragment {
         adapter = new LastProductsAdapter(lProducts);
         recList.setAdapter(adapter);
 
-
         fab.attachToRecyclerView(recList);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
