@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -20,7 +21,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.jrios.pricecheck.R;
 
@@ -59,6 +59,8 @@ public class NavigationDrawerFragment extends Fragment {
     private int mCurrentSelectedPosition = 0;
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
+
+    private FragmentManager.OnBackStackChangedListener mOnBackStackChangedListener;
 
     public NavigationDrawerFragment() {
     }
@@ -139,18 +141,14 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerToggle = new ActionBarDrawerToggle(
                 getActivity(),                    /* host Activity */
                 mDrawerLayout,                    /* DrawerLayout object */
-                R.drawable.ic_drawer,             /* nav drawer image to replace 'Up' caret */
+                R.drawable.ic_menu_black_24dp,             /* nav drawer image to replace 'Up' caret */
                 R.string.navigation_drawer_open,  /* "open drawer" description for accessibility */
                 R.string.navigation_drawer_close  /* "close drawer" description for accessibility */
         ) {
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
-                if (!isAdded()) {
-                    return;
-                }
-
-                getActivity().supportInvalidateOptionsMenu(); // calls onPrepareOptionsMenu()
+                setActionBarArrowDependingOnFragmentsBackStack();
             }
 
             @Override
@@ -188,6 +186,20 @@ public class NavigationDrawerFragment extends Fragment {
         });
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
+        mOnBackStackChangedListener = new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                setActionBarArrowDependingOnFragmentsBackStack();
+            }
+        };
+        getActivity().getSupportFragmentManager().addOnBackStackChangedListener(mOnBackStackChangedListener);
+
+    }
+
+    private void setActionBarArrowDependingOnFragmentsBackStack() {
+        int backStackEntryCount =
+                getActivity().getSupportFragmentManager().getBackStackEntryCount();
+        mDrawerToggle.setDrawerIndicatorEnabled(backStackEntryCount == 0);
     }
 
     private void selectItem(int position) {
@@ -245,16 +257,15 @@ public class NavigationDrawerFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (mDrawerToggle.onOptionsItemSelected(item)) {
+        if (mDrawerToggle.isDrawerIndicatorEnabled() &&
+                mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
-        }
-
-        if (item.getItemId() == R.id.action_example) {
-            Toast.makeText(getActivity(), "Example action.", Toast.LENGTH_SHORT).show();
+        } else if (item.getItemId() == android.R.id.home &&
+                getActivity().getSupportFragmentManager().popBackStackImmediate()) {
             return true;
+        } else {
+            return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
     /**

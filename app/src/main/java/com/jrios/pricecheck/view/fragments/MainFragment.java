@@ -123,6 +123,12 @@ public class MainFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        ((MainActivity) getActivity()).onSectionAttached(getString(R.string.app_name));
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         _instance = null;
