@@ -20,4 +20,6 @@
     <string name="unit_gram">g</string>
     <string name="action_upc">Scan Barcode</string>
     <string name="action_save">action_save</string>
+    <string name="productInfoNotFound">Product information not found</string>
+    <string name="barcodeActivityNotFound">Barcode Scanner not found</string>
 </resources>

@@ -61,7 +61,7 @@ public class ProductDTO {
 
         switch(productSizeUnit){
             case UNIT_PIECE:
-                if(productSize > 1)
+                if(productSize == 1)
                     rv += "piece";
                 else
                     rv += "pieces";
